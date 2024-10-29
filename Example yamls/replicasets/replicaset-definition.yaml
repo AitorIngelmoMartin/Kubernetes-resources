@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+# Para un replicsSer kind SIEMPRE vale 'ReplicaSet'
+kind: ReplicaSet
+metadata:
+  name: myapp-replicaset
+  labels:
+    app: myapp
+    type: frot-end
+spec:
+  replicas: 3
+  # El selector es la mayor diferencua contra el caso del replicationControles
+  # En ella 
+  selector:
+    matchLabels:
+      type: frot-end
+  template:
+    # En este nivel creamos los pods
+    metadata:
+      name: nginx-2
+      labels:
+        env: production
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+# Podemos interpretar un selector como un vigía que se dedica
+# a asegurarse que siempre existan X pods de un cierto tipo definido 
+# por el selector.

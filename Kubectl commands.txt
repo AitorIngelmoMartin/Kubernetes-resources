@@ -1,0 +1,80 @@
+Kubectl commands
+
+Obtener los pods de un name-space
+    Kubectl get pods
+
+Crear un pod en un name-space
+    Kubectl run <pod-name> --image=<image_name>
+
+Describir un pod
+    Kubectl describe pod <pod-name>
+
+Describir un nodo
+    Kubectl describe node <node-name>
+
+Crear un recurso a partir de un fichero
+    kubectl create -f <FILENAME>
+
+Para ver la lista de replic-controllers
+    kubectl get replicationcontroller
+    Si lanzamos un get pods les veremos
+
+Para ver un replicaSet
+    kubectl get replicaset
+
+Para obtener información de un replicaSet
+    kubectl describe rs/<rs-name>
+
+    Si queremos modificar un replicaSet, podemos:
+
+        1) usar kubectl replace -f <replica-set-definition>.yaml para modificar el contenido del fichero
+
+        2) usar kubectl scale --replicas=<new number of replicas> -f <replica-set-definition>.yaml
+
+        3) usar kubectl scale --replicas=<new number of replicas> <type = replicaset> <name from top metadata>
+
+        4) usar kubectl scale --replicas=<number-of-replics> rs/<replicaset-name>
+
+    Si queremos borrar un replicaSet
+
+        kubectl delete replicaset <name from top metadata>
+
+Editar un manifiesto de un recurso desplegado
+    kubectl edit <resource-type>/<resource-name> -o yaml 
+    
+    Nos entrará en un editor (VIM por ejemplo) donde tendremos que editar el YAML.
+    Cuando lo hayamos modificado, podemos usar el comando ':wq' para escribir+salir
+
+    El fichero que vemos NO es el original, sino una copia que Kubernetes
+    crea en memoria para permitirnos modificar la configuración de un objeto
+
+
+    Otra forma puede ser:
+        cat <pod-name>.yaml para editar el fichero del pod.
+        Tras esto, para aplicar los cambios debemos lanzar:
+          -f <pod-name>.yaml
+
+
+Crear recursos con Kubectl
+
+    Podemos generar plantillas para nuestros recursos si usamos
+
+        kubectl create deploy <my-resource-name> --image=<image-name> --dry-run=client -o yaml
+    
+    Esto nos lanza por consola un manifiesto el cual podemos guardar en un fichero si hacemos:
+
+        kubectl create deploy <my-resource-name> --image=<image-name> --dry-run=client -o yaml > <file-name>.yaml
+
+    Podemos agregar más parámetros a parte de la imagen.
+
+
+Upgrade
+
+    Es una forma de actualizar los pods en la cual se van muriendo y creando de nuevo poco a poco para no
+    tener una caida del servicio.
+
+    RollBack
+    Si la actualización tiene un fallo o queremos volver a lo anterior por cualquier motivo, entonces
+    debemos lanzar el siguiente comando
+        
+        kubectl rollout undo deployment/<deployment-name>
