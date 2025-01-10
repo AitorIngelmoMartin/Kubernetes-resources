@@ -123,3 +123,14 @@ Para listar recursos dentro de un namespace concreto podemos:
 Para obtener información de la conectividad de un servicio (svc) podemos:
 
     kubectl get svc <resource> --namespace=<namespace>
+
+Crear un service
+
+    kubectl create service <service-type> <service-name> --tcp=<port> --dry-run=client -o yaml > redis-service.yaml
+
+Crear un pod con un clusterip
+
+
+    kubectl run <pod-name> --image=<image-name> --port=<port-to-expose> --expose
+
+    En este caso, el service de tipo ClusterIP llevará el mísmo nombre que el del pod
