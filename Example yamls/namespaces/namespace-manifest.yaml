@@ -1,0 +1,5 @@
+# Manifiesto para crear un namespace de nombre dev
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev

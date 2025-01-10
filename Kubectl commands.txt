@@ -54,7 +54,17 @@ Editar un manifiesto de un recurso desplegado
         Tras esto, para aplicar los cambios debemos lanzar:
           -f <pod-name>.yaml
 
+Crear pod con comandos
 
+    kubectl run <pod-name> --image=<image-name> --namespace=<namespace>(optional)
+
+    La opción más recomendada es la siguiente:
+
+    kubectl run <pod-name> --image=<image-name> --namespace=<namespace>(optional) --dry-run=client -o yaml > <file-name>.yaml
+    
+    Donde:
+        --dry-run=client nos permite 'simular' si ese manififesto es correcto o no
+        -o yaml > <file-name>.yaml nos permite guardar el manifiesto en un fichero yaml
 Crear recursos con Kubectl
 
     Podemos generar plantillas para nuestros recursos si usamos
@@ -67,6 +77,9 @@ Crear recursos con Kubectl
 
     Podemos agregar más parámetros a parte de la imagen.
 
+Extraer la info de un pod en un YAML
+
+    kubectl get pod <pod-name> -o yaml > <file-name>.yaml
 
 Upgrade
 
@@ -78,3 +91,35 @@ Upgrade
     debemos lanzar el siguiente comando
         
         kubectl rollout undo deployment/<deployment-name>
+Crear un namespace
+
+    kubectl create namespace <namespace-name>
+
+    kubectl create -f <file-name>.yaml
+
+Crear recursos en un namespace concreto
+
+    kubectl create -f <resource-file>.yaml --namespace=<namespace>
+    
+    Tambien podemos agregar el campo 'namespace' dentro de los metadatos
+    del manifiesto para asegurarnos que el recurso SIEMPRE se crea en dicho namespace
+
+Para listar recursos dentro de un namespace concreto podemos:
+
+    kubectl get <resource> --namespace=<namespace>
+
+    Si no especificamos el campo 'namespace' se busca en el default
+
+    Podemos emplear otro namespace por defecto si ejecutamos lo siguiente:
+
+    kubectl confing set-context $(kubectl confing current-context) --namespace=<namespace>
+    De esta forma, si no especificamos el campo 'namespace' se mirara el namespace configurado
+    como por defecto
+
+    Siempre podemos ver todos los recursos entre todos los namespace si lanzamos
+
+    kubectl get <resource> --all-namespace
+
+Para obtener información de la conectividad de un servicio (svc) podemos:
+
+    kubectl get svc <resource> --namespace=<namespace>
