@@ -128,7 +128,12 @@ Crear un service
 
     kubectl create service <service-type> <service-name> --tcp=<port> --dry-run=client -o yaml > redis-service.yaml
 
-Crear un pod con un clusterip
+Crear un pod con un puerto expuesto
+
+
+    kubectl run <pod-name> --image=<image-name> --port=<port-to-expose> expose
+
+Crear un pod con un ClusterIP expuesto
 
 
     kubectl run <pod-name> --image=<image-name> --port=<port-to-expose> --expose
