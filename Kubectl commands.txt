@@ -139,3 +139,15 @@ Crear un pod con un ClusterIP expuesto
     kubectl run <pod-name> --image=<image-name> --port=<port-to-expose> --expose
 
     En este caso, el service de tipo ClusterIP llevará el mísmo nombre que el del pod
+
+Editar pods en caliente
+
+    Si el POD pertenece a un Deployments, podemos editar el pod en caliente con:
+
+    kubectl edit deployment my-deployment
+
+    En caso contrario, podemos extraer la configuración del pod que queremos modificar a un YAML, modificarlo y volverlo
+    a crear con el nuevo manifiesto:
+
+    kubectl get pod <my-pod-to-change> -o yaml > <file-name>.yaml
+    kubectl create -f <file-name>.yaml

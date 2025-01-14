@@ -1,0 +1,12 @@
+Sección args del manifiesto
+
+    En un fichero docker, tenemos 2 campos clave a la hora de lanzar comandos, el ENTRYPOINY y el CMD:
+
+        ENTRYPOINT: Es el comando a ejecutar al crear el pod
+        CMD: Es el valor por defecto que pasamos al comando de ENTRYPOINT.
+
+    En K8S, podemos definir el campo 'args' dentro del diccionario 'containers' para sobreescribir el valor
+    pasado por defecto por el que deseemos.
+
+    Podemos definir el equivalente al ENTRYPOINT en K8S con el campo 'command'. El cual sobreescribre
+    el valor del ENTRYPOINT del fichero docker.

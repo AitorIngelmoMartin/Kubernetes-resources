@@ -1,0 +1,40 @@
+Podemos definir variables de entorno en los manifiestos agregando el campo 'env'.
+Esto nos permite definir 3 tipos de variables de entorno:
+
+    Valores en texto plano (plai text key)
+
+        env:
+            - name: <nombre-variable>
+            value: <valor-variable>
+
+    ConfigMaps
+
+        env:
+            - name: <nombre-variable>
+            valueFrom: 
+                configMapKeyRef:
+
+    Secrets
+
+        env:
+            - name: <nombre-variable>
+            valueFrom: 
+                secretKeyRef:
+
+ConfigMaps
+    Son estructuras que nos permiten cargar datos de configuración con formato clave valor 
+    en K8S.
+
+    Al usar un config map, existen dos fases:
+
+        1) La fase de creación del ConfigMap
+
+        2) La inyección del ConfigMap al Pod
+
+    ¿Cómo creamos un configMap?
+
+        Forma imperativa:
+        kubectl create configmap <nombre-config-map> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2>
+                                                    (para definir varios simplemente ponemos varias veces el from-literal)
+                                                
+        kubectl create -f <fichero-que-define-el-configMap>.yaml
