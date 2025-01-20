@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: default
+spec:
+  containers:
+    - image: kodekloud/webapp-color
+      name: kodekloud/webapp-color
+  volumes:
+    - name: my-appConfig-volume
+      configMap:
+        name: <name-of-my-configMap>
+      

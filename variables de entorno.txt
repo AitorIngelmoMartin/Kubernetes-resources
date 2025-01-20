@@ -34,7 +34,29 @@ ConfigMaps
     ¿Cómo creamos un configMap?
 
         Forma imperativa:
-        kubectl create configmap <nombre-config-map> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2>
-                                                    (para definir varios simplemente ponemos varias veces el from-literal)
-                                                
-        kubectl create -f <fichero-que-define-el-configMap>.yaml
+            kubectl create configmap <nombre-config-map> --from-literal=<key1>=<value1> --from-literal=<key2>=<value2>
+                                                        (para definir varios simplemente ponemos varias veces el from-literal)
+
+        Forma declarativa:                              
+            kubectl create -f <fichero-que-define-el-configMap>.yaml
+
+        Donde el yaml tiene la siguiente estructura:
+
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+            name: app-config
+        data:
+            APP_CONFIG_PARAMETER_1: parameter value 1
+            APP_CONFIG_PARAMETER_2: parameter value 2
+
+    Podemos ver los config maps de un cluster con
+
+        kubectl get configmaps
+
+    y podemos ver su configuración con:
+
+        kubectl describe configmaps <configmap-name>
+
+    Podemos generar un deployment que disponga de un configMap asociado si dentro de la sección containers, dentro de spec, definimos
+    el campo envFrom.
