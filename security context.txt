@@ -1,0 +1,80 @@
+Dado que desde un pod podemos lanzar comandos linux, debemos tener cuidado en cuanto a 
+la seguridad se refiere.
+
+Para ello, podemos acotar los permisos y privilegios del pod a partir del campo securityContext
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: security-context-demo
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+    supplementalGroups: [4000]
+  volumes:
+  - name: sec-ctx-vol
+    emptyDir: {}
+  containers:
+  - name: sec-ctx-demo
+    image: busybox:1.28
+    command: [ "sh", "-c", "sleep 1h" ]
+    volumeMounts:
+    - name: sec-ctx-vol
+      mountPath: /data/demo
+    securityContext:
+      allowPrivilegeEscalation: false
+
+De este ejemplo obtenemos que:
+
+    - TODOS los procesos dentro del pod se lanzarán con el ID 1000 tal y como se indica en 'runAsUser'.
+
+    - El campo 'runAsGroup' especifica el grupo primario 3000 para todos aquellos procesos dentro del contenedor del pod.
+    Si ignoramos este valor se usará el 0 (root) por defecto.
+
+    - Como además hemos informado del campo fsGroup, TODOS los procesos del contenedor también forman parte del
+    grupo suplementario 2000. De forma que el dueño del volumen '/data/demo' es el grupo 2000
+
+    - Additionally, when the supplementalGroups field is specified, all processes of the container are also part of the specified groups.
+    If this field is omitted, it means empty.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-pod
+spec:
+  securityContext:
+    runAsUser: 1001
+  containers:
+  -  image: ubuntu
+     name: web
+     command: ["sleep", "5000"]
+     securityContext:
+      runAsUser: 1002
+
+  -  image: ubuntu
+     name: sidecar
+     command: ["sleep", "5000"]
+
+En este ejemplo, la web usa el usuario 1002; y el resto de container el 1001 a menos que se indique lo contrario
+
+
+Podemos agregar capabilities a los comandos si lo definimos dentro del campo 'securityContext' 
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+  namespace: default
+spec:
+  containers:
+  - command:
+    - sleep
+    - "4800"
+    image: ubuntu
+    name: ubuntu-sleeper
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
