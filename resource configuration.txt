@@ -1,0 +1,30 @@
+Cada uno de nuestros pods necesita de ciertos recursos (cpu y memoria) para funcionar.
+
+Debido a esto, podemos configurar nuestros despliegues para que los pods solo se desplieguen
+en caso de disponer de recursos suficientes en el nodo.
+
+Para expecificar el mínimo de recursos que queremos en un pod, debemos definir el campo 'resources' dentro
+de spec.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-2
+  labels:
+    env: production
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 8080
+      resources:
+        requests:
+          memory: "4Gi"
+          cpu: 2
+
+En este ejemplo, solicitamos que el pod disponga de 4Gi y 2 cpus.
+
+    Es posible asignar valores de CPU como 0.1 (100m 'milicore'). Siendo 1m el mínimo.
+
+    Los
