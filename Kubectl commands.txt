@@ -50,7 +50,8 @@ Editar un manifiesto de un recurso desplegado
 
 
     Otra forma puede ser:
-        cat <pod-name>.yaml para editar el fichero del pod.
+        cat <pod-name>.yaml para ver en la terminal el fichero
+        vim <pod-name>.yaml para editar el fichero en VIM
         Tras esto, para aplicar los cambios debemos lanzar:
           -f <pod-name>.yaml
 
@@ -91,6 +92,7 @@ Upgrade
     debemos lanzar el siguiente comando
         
         kubectl rollout undo deployment/<deployment-name>
+
 Crear un namespace
 
     kubectl create namespace <namespace-name>
@@ -151,3 +153,13 @@ Editar pods en caliente
 
     kubectl get pod <my-pod-to-change> -o yaml > <file-name>.yaml
     kubectl create -f <file-name>.yaml
+
+Modificar replicas de Deployments o replicaSets
+
+    replicaSets
+
+    kubectl scale --replicas=3 rs/<replica-set-name>
+
+    Deployments
+
+    kubectl scale deployment/<deployment-name> --replicas=3
