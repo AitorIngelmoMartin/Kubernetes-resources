@@ -59,6 +59,10 @@ En este ejemplo, indicamos que como mínimo el pod disponga de 1Gi/1cpu y como m
 Es importante tener en cuenta que un pod JAMAS podrá exceder el límite de cpu. Si pide más cpu de la 
 máxima que puede obtener el pod sufrirá throttle.
 
+Podemos ver todo lo relacionado con el consumo si lanzamos el comando:
+
+  kubectl describe node
+
 Por otro lado, si el pod solicita más memoria de la máxima configurada podrá hacer uso de ella si hay disponible.
 No obstante, si esta situación ocurre constantemente el pod será terminado por un OOM. (OutOfMemory)
 
