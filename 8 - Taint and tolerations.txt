@@ -1,0 +1,50 @@
+En un cluster podemos restringir la creación de recursos a ciertos nodos a través de los 'taint and tolerations'.
+
+Una forma de ver esto es con el ejemplo del mosquito y la persona. Una persona se pone repelente (taint) para que
+el mosquito no se pose sobre él. Sin enbargo, una mariposa es tolerante al repelente, por lo que podrá posarse.
+
+En k8s la idea es aplicar un taint a los nodos de forma que SOLO LOS PODS TOLERANTES a él puedan desplegarse en 
+dicho nodo.
+
+Podemos aplicar un taint sobre un nodo si lanzamos
+
+    kubectl taint nodes <node-name> <key>=<value>:<taint-effect>
+
+Podemos deshacer un taint si lanzamos:
+    
+    kubectl taint nodes <node-name> <key>=<value>:<taint-effect>-
+
+    Donde '<taint-effect>' representa la accion ocurrida con los PODs que NO SEAN TOLERANTES.
+    Este campo puede tener uno de los 3 siguientes valores:
+
+        NoSchedule: El POD NO se levantará en el nodo.
+
+        PreferNoSchedule: El cluster procurará evitar levantar el pod en el nodo, pero no se garantiza.
+
+        NoExecute: Los nuevos PODS NO se levantarán en el nodo y los existented (de haberlos) serán 
+        desalojados a otro nodo.
+
+
+Ejemplo de una abeja que permite el taint contra mosquitos
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+    name: bee
+    spec:
+    containers:
+    - image: nginx
+        name: bee
+    tolerations:
+    - key: spray
+        value: mortein
+        effect: NoSchedule
+        operator: Equal
+
+Es importante que los tains buscan asegurarse que no se levanten pods de otro tipo que el expecifico del nodo.
+NO EVITAN que un pod tolerante a un nodo se levante en otro nodo.
+
+    (Si queremos que un pod SIEMPRE se despliegue en un nodo concreto, se hace vía afinidad, no mediante un taint)
+
+
+Si un pod no puede lanzarse en ningún nodo, quedará a la espera hasta encontrar un nodo al que sea tolerante.
