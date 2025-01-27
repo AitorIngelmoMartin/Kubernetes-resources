@@ -6,25 +6,66 @@ en caso de disponer de recursos suficientes en el nodo.
 Para expecificar el mínimo de recursos que queremos en un pod, debemos definir el campo 'resources' dentro
 de spec.
 
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx-2
-  labels:
-    env: production
-spec:
-  containers:
-    - name: nginx
-      image: nginx
-      ports:
-        - containerPort: 8080
-      resources:
-        requests:
-          memory: "4Gi"
-          cpu: 2
+Ejemplo con solo 'resources request'
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nginx-2
+    labels:
+      env: production
+  spec:
+    containers:
+      - name: nginx
+        image: nginx
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: 2
 
 En este ejemplo, solicitamos que el pod disponga de 4Gi y 2 cpus.
 
     Es posible asignar valores de CPU como 0.1 (100m 'milicore'). Siendo 1m el mínimo.
 
-    Los
+    Lo mismo ocurre con la memoria.
+
+No obstante, por defecto un pod NO tiene límite de recursos, por lo que es muy interesante definir
+'resource limits' para controlar esto.
+
+Ejemplo con 'resources request' y 'resource limits'
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nginx-2
+    labels:
+      env: production
+  spec:
+    containers:
+      - name: nginx
+        image: nginx
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: 1
+          limits:
+            memory: "2Gi"
+            cpu: 2
+
+En este ejemplo, indicamos que como mínimo el pod disponga de 1Gi/1cpu y como mucho de 2Gi/2cpu.
+
+Es importante tener en cuenta que un pod JAMAS podrá exceder el límite de cpu. Si pide más cpu de la 
+máxima que puede obtener el pod sufrirá throttle.
+
+Por otro lado, si el pod solicita más memoria de la máxima configurada podrá hacer uso de ella si hay disponible.
+No obstante, si esta situación ocurre constantemente el pod será terminado por un OOM. (OutOfMemory)
+
+
+Para gestionar todo lo relacionado con la memoria, existe un recurso llamado LimitRange definido a nivel de namespace.
+Este LimitRange podemos definirlos a nivel de Container, Pod o PersistantVolumes.
+
+
+Existe una estrategia similar a nivel de NameSpace, en la cual podemos definir el consumo total de recursos.
+Esto lo podemos definir a partir de un recurso llamado 'ResourceQuota'.

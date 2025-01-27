@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-resource-constraint
+spec:
+  limits:
+    - type: Container
+      default: #Sección que define los límites por defecto
+        cpu: 500m 
+      defaultRequest: #Sección que define las peticiones por defecto
+        cpu: 500m
+      max: # Sección que define el max and min define the limit range
+        cpu: "1" # El container NUNCA tendrá más de 1 cpu
+        memory: 128Mi
+      min:
+        cpu: 100m # El container NUNCA tendrá menos de 100m
+        memory: 64Mi
