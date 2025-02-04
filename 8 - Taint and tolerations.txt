@@ -22,7 +22,7 @@ Podemos deshacer un taint si lanzamos:
         PreferNoSchedule: El cluster procurará evitar levantar el pod en el nodo, pero no se garantiza.
 
         NoExecute: Los nuevos PODS NO se levantarán en el nodo y los existented (de haberlos) serán 
-        desalojados a otro nodo.
+        desalojados a otro nodo.s
 
 
 Ejemplo de una abeja que permite el taint contra mosquitos
@@ -32,14 +32,14 @@ Ejemplo de una abeja que permite el taint contra mosquitos
     metadata:
     name: bee
     spec:
-    containers:
-    - image: nginx
-        name: bee
-    tolerations:
-    - key: spray
-        value: mortein
-        effect: NoSchedule
-        operator: Equal
+        containers:
+        - image: nginx
+            name: bee
+        tolerations:
+        - key: spray
+            value: mortein
+            effect: NoSchedule
+            operator: Equal
 
 Es importante que los tains buscan asegurarse que no se levanten pods de otro tipo que el expecifico del nodo.
 NO EVITAN que un pod tolerante a un nodo se levante en otro nodo.

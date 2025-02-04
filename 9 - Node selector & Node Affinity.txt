@@ -1,0 +1,58 @@
+NODE SELECTOR
+
+    Debido a la diferencia que podemos tener entre nodos de un cluster (es posible que no todos los nodos sean iguales)
+    es posible que nos interese disponer de cierta lógica para 'forzar' a que los pods pesados se lanzen en el nodo con más recursos.
+
+    La forma mas fácil de hacer esto es usando un 'node selector' en el manifiesto del pod. Esta propiedas hace que se cree el pod
+    en el nodo cuyo label coincida con el que que hayamos definido en la sección 'nodeSelector'.
+
+        kubectl label nodes <node-name> <label-name>=<label-value>
+    
+    No obstante, este tipo de selector NO permite lógicas complejas tales como crear pods en cualquier nodo a excepción de X 
+    o crear pods en nodos con Y o Z selectores.
+
+    Para estos casos, debemos hacer uso de los Node Affinity
+
+NODE AFFINITY
+
+    Similar a los 'node selector' nos permiten disponer de cierta lógica a la hora de crear pods en ciertos nodos, pero en este
+    caso disponemos de opciones avanzadas para ello.
+
+    Estas reglas se pueden evaluar de 2 formas:
+
+        requiredDuringSchedulingIgnoredDuringExecution: NO se levantará el pod a menos que se cumpla la regla.
+        El funcionamiento es similar a los 'node selector' pero con mayor capacidad lógica.
+        
+        preferredDuringSchedulingIgnoredDuringExecution: El scheduler tratará de encontrar un nodo que cumpla la regla.
+        En caso de no encontrar un nodo que la cumpla, el scheduler levantará el pod de igual forma.
+        If a matching node is not available, the scheduler still schedules the Pod.
+
+    Ejemplo
+
+        apiVersion: v1
+        kind: Pod
+        metadata:
+        name: pod-with-node-affinity
+        spec:
+            containers:
+            - name: with-node-affinity
+                image: registry.k8s.io/pause:3.8
+            affinity:
+                nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                    nodeSelectorTerms:
+                    - matchExpressions:
+                    - key: size-label
+                        operator: In
+                        values:
+                        - Medium
+                        - large
+
+    En este ejemplo vemos que el pod solo se levantará si el nodo tiene el label 'size-label' con valores 'Medium' o 'Large'.
+
+
+    Los posibles valores del campo 'perator' son: In, NotIn, Exists, DoesNotExist, Gt y Lt
+
+NOTA:
+'IgnoredDuringExecution' significa que si los labels del nodo cambian despues de haber levantado los pods, seguirán existiendo
+dado que no se volverá a evaluar la regla.

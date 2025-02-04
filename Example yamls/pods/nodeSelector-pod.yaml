@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app-pod
+spec:
+  containers:
+    - name: my-app-pod-name
+      image: my-app-pod-imagen
+  nodeSelector:
+    <label-name>: <label-value>
