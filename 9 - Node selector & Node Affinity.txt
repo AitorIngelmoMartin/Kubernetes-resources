@@ -39,19 +39,19 @@ NODE AFFINITY
                 image: registry.k8s.io/pause:3.8
             affinity:
                 nodeAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                    nodeSelectorTerms:
-                    - matchExpressions:
-                    - key: size-label
-                        operator: In
-                        values:
-                        - Medium
-                        - large
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                        nodeSelectorTerms:
+                        - matchExpressions:
+                        - key: size-label
+                            operator: In
+                            values:
+                            - Medium
+                            - large
 
     En este ejemplo vemos que el pod solo se levantará si el nodo tiene el label 'size-label' con valores 'Medium' o 'Large'.
 
 
-    Los posibles valores del campo 'perator' son: In, NotIn, Exists, DoesNotExist, Gt y Lt
+    Los posibles valores del campo 'operator' son: In, NotIn, Exists, DoesNotExist, Gt y Lt
 
 NOTA:
 'IgnoredDuringExecution' significa que si los labels del nodo cambian despues de haber levantado los pods, seguirán existiendo
