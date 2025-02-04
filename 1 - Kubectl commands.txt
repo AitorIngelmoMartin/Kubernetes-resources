@@ -167,3 +167,9 @@ Modificar replicas de Deployments o replicaSets
 Podemos agregar labels a nodos si lanzamos:
 
     kubectl label node <node-name> <label-key>=<label-value>
+
+Podemos lanzar comandos sobre contenedores con
+
+     kubectl -n <namespace> exec -it <pod-name> -- <commands> # cat /log/app.log
+    
+    Donde '--' se usa para separar los comandos de k8s de los que queremos ejecutar

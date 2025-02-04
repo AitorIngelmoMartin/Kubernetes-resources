@@ -1,0 +1,28 @@
+Es posible que por algún motivo necesitemos tener pods con más de un contenedor si nuestro contenedor usa por ejemplo un agente.
+K8S dispone de varias estrategias para generar pods con más de un contenedor y permitiendo su comunicación de forma local:
+
+    sidecar: Un ejemplo de uso es un agente encargado de normalizar los archivos log de las aplicaciones.
+    Este agente será un contenedor común que queremos que vaya siempre junto al contenedor 'principal' para que este
+    se comunique de forma local con el agente.
+
+
+Para construir un pod con más de un contenedor, simplemente debemos aprovechar el hecho de que la sección 'containers' es una lista.
+Podemos definir tantos como sean necesarios.
+
+
+InitContainers
+    En el caso anterior, los dos contenedores van a vivir siempre juntos y es lo que buscamos.
+    No obstante, es posible que necesitemos que se ejecute un contenedor de apoyo una única vez, cosa que podemos hacer gracias a los
+    InitContainers. 
+
+    Con un InitContainers podemos levantar uno o varios contenedores que serán creados y ejecutados cada vez que se levante el pod.
+    El resto de contenedores NO SE LANZARÁN hasta que el proceso de los InitContainers definido termine.
+
+    Puntos importantes:
+    
+        1) En caso de definir más de un contenedor en la sección InitContainers, se ejecutarán deforma secuencial de 1 en 1.
+
+        2) En caso de que uno de los contenedores definidos en InitContainers falle, k8s los relanzará tantas
+        veces como sea necesario hasta que funcione
+
+    
