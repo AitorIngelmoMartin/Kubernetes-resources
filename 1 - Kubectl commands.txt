@@ -163,3 +163,7 @@ Modificar replicas de Deployments o replicaSets
     Deployments
 
     kubectl scale deployment/<deployment-name> --replicas=3
+
+Podemos agregar labels a nodos si lanzamos:
+
+    kubectl label node <node-name> <label-key>=<label-value>
