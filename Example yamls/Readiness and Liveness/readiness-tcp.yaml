@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goproxy
+  labels:
+    app: goproxy
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    ports:
+    - containerPort: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15 # Tiempo que tardará hasta hacer la primera comprobación
+      periodSeconds: 10 # Tiempo que tardará entre comprobaciones fallidas (por defecto hace 3 intentos)
+      failureThreshold: 5 # Número de intentos totales (por defecto hace 3 intentos)

@@ -1,0 +1,47 @@
+Readiness
+
+Los estados que nos proporciona K8S de los containers no tienen porqué corresponder del todo con el estado real del contenedor.
+Esto puede ser debido a que K8S da por 'RUNNING' un contenedor que aún está lanzando un despliegue de Jenkins.
+
+Para poder definir reglas personalizadas que indiquen si el contenedor está ready o no, podemos definir el campo 'readinessProbe'.
+Esto nos permite, por ejemplo, lanzar una petición HTTPS al contenedor a una URL concreta para verificar que todo está levantado.
+
+Esto podemos hacerlo para:
+
+    Comprobaciones HTTPS
+
+    Comprobaciones TCP
+
+    Comprobaciones via BASH
+
+A la hora de configurar estos comprobantes, debemos configurar los siguientes valores:
+
+    initialDelaySeconds: Tiempo que tardará hasta hacer la primera comprobación
+
+    periodSeconds: Tiempo que tardará entre comprobaciones fallidas (por defecto hace 3 intentos)
+
+    failureThreshold: Número de intentos totales (por defecto hace 3 intentos)
+
+Liveness
+
+Existe la posiblidad de que aunque el pod esté levantado correctamente, a nivel interno está dando algún tipo de fallo
+que impide el correcto funcionamiento de la aplicaicón (como un bucle infinito por error)
+
+Liveness nos permite resolver estos casos efectuando pruebas periódicas para comprobar si es estado del pod
+(desde el punto de vista de la lógica de negocio) es correcto.
+
+Esto podemos hacerlo para:
+
+    Comprobaciones HTTPS
+
+    Comprobaciones TCP
+
+    Comprobaciones via BASH
+
+A la hora de configurar estos comprobantes, debemos configurar los siguientes valores:
+
+    initialDelaySeconds: Tiempo que tardará hasta hacer la primera comprobación
+
+    periodSeconds: Tiempo que tardará entre comprobaciones fallidas (por defecto hace 3 intentos)
+
+    failureThreshold: Número de intentos totales (por defecto hace 3 intentos)
