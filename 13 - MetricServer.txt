@@ -1,0 +1,13 @@
+Es la opción actual de monitoreo en memoria de los nodos de tu claster de k8s.
+Al ser una solución en memoria, significa que no almacena el historico.
+
+El funcionamiento interno parte de que KUBELET dispone de un cAdvisor dedicado a capturar métricas de rendimiento 
+para exponerlas al MetricServer.
+
+        (si usas minikube puedes activarlo lanzando minikube addons enable metrics-server)
+
+Una vez tengamos acceso a MetricServer, podemos accerder a los logs con:
+
+    kubectl top node # Muestra el rendimiento de todos los nodos
+
+    kubectl top pod # Muestra el rendimiento de todos los nodos

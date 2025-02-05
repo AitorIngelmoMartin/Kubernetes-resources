@@ -1,0 +1,7 @@
+Al igual que en Docker, podemos ver los logs de los pods de K8S si lanzamos el comando.
+
+    kubectl logs -f <nombre-pod>
+
+No obstamte, si nuestro pod tiene varios contenedores, debemos expecificar el nombre del contenedor que queremos ver
+
+    kubectl logs -f <nombre-pod> <nombre-contenedor>

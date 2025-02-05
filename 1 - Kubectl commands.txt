@@ -177,4 +177,15 @@ Podemos lanzar comandos sobre contenedores con
 Podemos destruir y recrear un recursos a partir de un fichero con
 
     kubectl replace -f <file-name>.yaml 
-    
+
+Podemos obtener un recurso a partir de labels con:
+
+    kubectl get <resource-type> --selector <label-key>=<label-value>
+
+    Podemos buscar todos los recursos con:
+
+    kubectl get all --selector <label-key>=<label-value>
+
+    Podemos concatenar varios labels en la busqueda con:
+
+    kubectl get <resource-type> --selector <label-key_1>=<label-value_1>, <label-key_2>=<label-value_2>
