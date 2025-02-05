@@ -189,3 +189,11 @@ Podemos obtener un recurso a partir de labels con:
     Podemos concatenar varios labels en la busqueda con:
 
     kubectl get <resource-type> --selector <label-key_1>=<label-value_1>, <label-key_2>=<label-value_2>
+
+Podemos aplicar cambios sobre un recurso con:
+
+    Kubectl apply -f <file-name>.yaml
+
+Podemos modificar SOLO EN EL CLUSTER la versión de una imagen de un deployment con:
+
+    Kubectl set image deployment/<deployment-name> <container-name>=<image-with-new-version>
