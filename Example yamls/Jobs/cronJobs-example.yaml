@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: CronJob
+metadata:
+  name: reporting-job
+spec:
+  jobTemplate:
+    spec:
+      completions: 3
+      parallelism: 3
+      template:
+        spec:
+          containers:
+            - name: reporting-tool
+              image: reporting-tool-image
+          restartPolicy: Never
+  schedule: "*/30 12 * * 1-5"

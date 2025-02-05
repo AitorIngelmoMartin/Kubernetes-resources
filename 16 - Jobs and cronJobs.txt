@@ -1,0 +1,86 @@
+Jobs
+
+    Existen diversos tipos de cargas que podemos soportar en K8S, tales como web, database o aplicaciones.
+    No obstante, existen otro tipo de 'workloads' tales como 'batch processing', 'analytics' o 'reporting' que hacen una determinada función y luego terminan.
+
+    En docket, este tipo de containers se levantan, hacen su tarea; y quedan en estado 'Exited'.
+    En K8S, el funcionamiento no es del todo igual
+
+    Si tomamos de ejemplo el manifiesto de abajo, el pod se levantará, el contenedor hará su multiplicación, y su estado pasará a completed.
+    No obstante, K8S lo volverá a levantar al verlo en completed indefinidamente.
+
+        apiVersion: v1
+        kind: Pod
+        metadata:
+            name: math-pod
+        spec:
+            containers:
+                - name: single-task-container
+                image: ubuntu
+                command: ['expr', '3', '*','2']
+
+    Esto se debe a que el comportamiento por defecto de K8S es tener los pods levantados siempre que se pueda. 
+    Si queremos modificar esto, debemos configurar el valor 'restartPolicy' del contenedor como 'Never' 
+
+        apiVersion: v1
+        kind: Pod
+        metadata:
+            name: math-pod
+        spec:
+            containers:
+                - name: single-task-container
+                image: ubuntu
+                command: ['expr', '3', '*','2']
+            restartPolicy: Never
+
+    Si queremos generar varios pods que realicen tareas únicas, podemos hacer uso de los 'jobs', que son similares a los replicaSets.
+
+        apiVersion: v1
+        kind: Job
+        metadata:
+        name: math-job
+        spec:
+            completions: 3
+            parallelism: 2
+            template:
+                spec:
+                containers:
+                    - name: math-add
+                    image: ubuntu
+                    command: [ 'expr','3','+','2']
+                restartPolicy: Never
+
+    Cosas a tener en cuenta:
+
+
+        1) Los resultados de los jobs los podemos ver en los logs con:
+
+            kubectl logs <job-name>
+
+        Si borramos el job, se eliminarán los pods creados por el job tambien.
+
+        2) 'completions' sirve para indicar el número de pods a lanzar. Por defecto se crean de 1 en 1 SI Y SOLO SI el anterior ha terminado.
+        En caso de que un pod falle, se generarán más hasta tener tantos OK como se hayan indicado en 'completions'
+
+        3) Si queremos que se lancen varios pods a la vez, podemos hacerlo definiendo el campo 'parallelism'
+
+cronJobs
+
+    Son un tipo de Jobs que en lugar de ejecutarse de forma instantanea se ejecutan cada cierto tiempo a partir de una expresión cron
+
+    apiVersion: v1
+    kind: CronJob
+    metadata:
+    name: reporting-job
+    spec:
+        jobTemplate:
+            spec:
+                completions: 3
+                parallelism: 3
+                template:
+                    spec:
+                        containers:
+                            - name: reporting-tool
+                            image: reporting-tool-image
+                        restartPolicy: Never
+            schedule: "*/30 12 * * 1-5"
