@@ -1,0 +1,33 @@
+1Estrategias de deployment
+
+
+    Los deployments nos permiten hacer 2 tipos de despliegues:
+
+        Recrear: Consiste en destruir todos los pods antiguos y crear los nuevos con la versión mejorada.
+        El problema es que tenemos parada de servicio.
+
+        RollingUpdate (modo por defecto): Consiste en ir poco a poco destruyendo y creando los nuevos pods para que de cara 
+        al cliente siempre haya disponibilidad.
+    
+No obstante, existe la posibilidad de usar las siguientes estrategias aunque no estén soportadas:
+
+    Blue/Gree
+    
+    En esta táctica disponemos de ambas versiones a la vez (blue la vieja, green la nueva).
+    El 100% del tráfico se enruta hacia la versión vieja hasta que se pasan todos los tests necesarios en la nueva.
+    Una vez se cumplan, se pasa a la nueva versión.
+
+    Para poder hacer esto en K8S, debemos de disponer de un deployment que contenga servicios con X label.
+    A continuación, generaremos un deployment con los servicios actualizados a la nueva versión y les dotamos del nuevo label.
+    Una vez lo tengamos, modificamos los servicios con el nuevo label y ya cursaríamos todo el tráfico al nuevo deployment.
+
+    Canary Updates
+
+    Similar al Blue/Green, lo que vamos a hacer es tener 2 versiones y enrutar una pequeña parte del tráfico
+    a la nueva versión.
+
+    Esto lo podemos hacer agregando un label común a ambos deployments además de un label con la versión.
+    Esto hará que parte del tráfico se enrute debido al label común, pero llegado un punto
+    modificas el service para apuntar solo a la nueva versión.
+
+    Para ajustar la cantidad de tráfico al nuevo deployment, basta con reducir el número de pods.
