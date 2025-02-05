@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80 # Puerto del pod expuesto
+      port: 80 # Puerto del service con el cual queremos conectarnos al pod
+      nodePort: 30008 # Puerto del nodo por el que entra y sale el tráfico (solo podemos usar los del rango 30000- 32767)
