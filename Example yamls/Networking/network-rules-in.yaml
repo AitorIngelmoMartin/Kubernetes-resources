@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+    - Ingress
+  ingress: # Esta sección SOLO tendrá efecto si el policyTypes está definido para este uso
+    - from:
+      - podSelector: #En este caso, al haber 2 selectores, significa que solo permitimos tráfico si se cumplen las 2 condiciones
+          matchLabels:
+            name: api-pod # Label sobre el que vamos a aplicar la política
+      ports:
+          - protocol: TCP
+            port: 3306

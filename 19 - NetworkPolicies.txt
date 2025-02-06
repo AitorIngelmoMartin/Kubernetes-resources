@@ -1,0 +1,33 @@
+    A nivel de tráfico, se deben definir reglas de Ingress y Egress que definan por donde entra y sale el tráfico.
+
+    En  K8S, tenemos una VPC que por defecto tiene una política 'All allow' traffic que permite que todos los recursos
+    se comuniquen con todos los recursos.
+
+    No obstante, podemos definir nuestras propias políticas de redes a partir de labels
+
+        apiVersion: networking.k8s.io/v1
+        kind: NetworkPolicy
+        metadata:
+        name: db-policy
+        spec:
+        podSelector:
+            matchLabels:
+            role: db
+        policyTypes:
+            - Ingress # o Egress
+        ingress: # Esta sección SOLO tendrá efecto si el policyTypes está definido para este uso
+            - from:
+            - podSelector:
+                matchLabels:
+                    name: api-pod # Label sobre el que vamos a aplicar la política
+            ports:
+                - protocol: TCP
+                port: 3306
+    
+    Las NetWork policis están permitias por: Kube-router, Calico, Romana y  Weave-net, pero NO por Flannel
+
+    Puntos clave:
+    
+        1) TODO el tráfico que se deja entrar, puede salir, no necesitamos otra regla para que salga
+
+        2) Es posible permitir tráfico desde IPs externas al cluster de K8S a través de un ipBlock
