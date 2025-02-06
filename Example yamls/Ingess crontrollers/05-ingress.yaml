@@ -1,3 +1,4 @@
+# Este fichero va en el NameSpace en el que están los servicios que queremos acceder
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
