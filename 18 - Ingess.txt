@@ -1,0 +1,32 @@
+Ingress
+
+    Al desplegar una aplicación tenemos que configurar varios elementos del red para permitir que nuestros usuarios puedan
+    acceder a ella. Esto usualmente implica DNSs, configurar servicodes proxys, loadBalancers y reglas de Firewall.
+
+    No obstante, mucha de esta configuración puede hacerse desde el propio cluster de K8S, permitiendo tener un único cluster
+    que haga llamadas a Pods distintos y balancee su carga en función de la URL solicitada.
+
+    Esto no implica que estemos exentos de realizar configuraciones fuera del cluster, simplemente simplifica todo el tema de
+    la conectividad en una capa gestionada dentro del cluster. Lo que permite que hagamos una configuración única.
+
+    Existen varios de estos 'Ingress controllers' que podemos usar, siendo el de AWS, GCP y NGINX los 2 mantenidos por K8S.
+
+                        (En el curso se usa el de NGINX, que es el que se detalla aqui)
+
+    Al generar in Ingress es olbigatorio acompañarlo de un Ingress Controller. En caso contrario no tendrá efecto.
+    
+    Los Ingress se configuran a través de un ConfigMap, el cual usaremos para centralizar la configuración del Ingress.
+
+
+    Para listar todos los namespaces usamos:
+
+        kubectl get ingress --all-namespaces
+
+
+    Pasos para levantar un Ingress
+
+        1) Crea un namespace para contener todos sus componentes
+
+        2) Crea un ConfigMap dedicado al Ingress
+
+        3) Para el caso de NGINX, crea 2 ServiceAccounts ngress-nginx y ingress-nginx-admission

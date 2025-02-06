@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress #Debe ser un subdominio DNS válido
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / #Esta línea permite que en caso de no existir el path, se llame a la URL básica
+spec: #Contiene la lista de las llamadas HTTP/HTTPS a usar
+  ingressClassName: nginx
+  rules: #Tenemos una regla por cada dominio (host)
+  - host: v1.peladonerd.local
+    http:
+      paths:
+      - path: /V1-service
+        pathType: Exact
+        backend:
+          service:
+            name: hello-v1-svc
+            port:
+              number: 80
+        
+  - host: v2.peladonerd.local 
+    http:
+      paths:
+      - path: /V2-service
+        pathType: Exact
+        backend:
+          service:
+            name: hello-v2-svc
+            port:
+              number: 80
