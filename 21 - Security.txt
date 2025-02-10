@@ -1,0 +1,46 @@
+Seguridad del cluster
+
+    La primera línea de defensa es el kube-apiserver, en el cual definimos:
+
+        1) Quien puede entrar: Esto se hace a partir de mecanísmos de autenticación como user/pass, tokens, certificados 
+        ServiceAccouts en caso de ser máquinas y demás.
+
+        2) Qué pueden hacer
+
+Authentication
+
+    Accounts
+
+        En un cluster existen dos grupos de cuentas principales, los asignados a usuarios y los asignados a cuentas de servicio (SV)
+        
+            * Para el caso de los usuarios, podemos crearlos usando el siguiente comando:
+
+                kubectl create user <user-name>
+
+            * Para el caso de los usuarios de servicio, usamos los ServiceAccouts ya detallados anteriormente.
+        
+        TODO el acceso de usuarios pasa a través del kube-apiserver, el cual primero auntentifica la petición antes de procesar la petición.
+
+        Mecanísmos de autenticación:
+
+            Existen varios mecanísmos de autenticación que podemos configurar en el cluster:
+
+                Statis Password File: Es un fichero con una lista de pares user_name-Password.
+
+                Statis Token File: Es un fichero con una lista de pares user_name-tokens
+
+                Mediante certificados certificados
+
+                Usando herramientas de 3eros
+
+            Statis Password File & Statis Token File (no recomendados al ser muy inseguros, deprecado desde K8S 1.19)
+
+                Son las formas mas simples de autenticar usuarios. Consiste en un csv con 3 columnas, password, user-name, uuid.
+                Tras configurarlo, podemos configurar en el kube-apiserver usando '--basic-auth-file=<file-name>.csv' para 
+                el fichero con contraseñas y '--token-auth-file=<file-name>.csv' para el fichero con tokens
+
+                Se debe reiniciar el kube-apiserver para que haga caso al fichero. No obstante, si usamos un YAML para la configuración
+                del kube-apiserver, el propio kube-apiserver se reiniciará en cuanto actualicemos el manifiesto con el nuevo campo.
+
+                Una vez hayamos definido alguno de estos 2 métodos de autenticación, podemos acceder al cluster lanzando un curl con la
+                opción -u "<user-name>:<password> o con la opción --header "Authorization: Bearer <token> si usamos tokens
