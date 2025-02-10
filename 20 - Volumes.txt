@@ -1,0 +1,62 @@
+Volumes
+
+    En K8S la información dentro de los pods se pierde una vez se  muere el pod. No obstante, existe la posiblidad
+    de tener información persistente mediante volumes.
+
+    Estos volumes actúan como un FS, en el cual indicamos el path en el que van a escribir
+
+        apiVersion: v1
+        kind: Pod
+        metadata:
+        name: my-pod
+        spec:
+        containers:
+            - name: alpine
+            image: alpine
+            command: ["/bin/sh","-c"]
+            args: ["shuf -i 0-100 -n 1 >> /opt/number.out;"] # Genera un nº del 1 al 100 y lo guarda en /opt/number.out
+            volumeMounts:
+                - mountPath: /opt # Carpeta donde se van a almacenar los ficheros. Será hija de la carperta root corespondiente
+                name: data-volume
+        volumes:
+            - name: data-volume
+            hostPath:
+                path: /data #Directorio del volume que actuará de root path
+                type: Directory
+    
+    No obstante, esta solución tiene un peligro a la hora de tener multinodos. Ya que no todos los pods de los nodos serán iguales
+    pero si escribirán datos en el mismo volume.
+    Es posible usar, por ejemplo, soluciones externas para solventar el problema con el nodo, como por ejemplo usar AWS EBS
+
+        volumes:
+        - name: data-volume
+        awsElasticBlockStore:
+            volumeID: <my-volume-id>
+            fsType: ext4
+
+Persistant volumes
+
+    Los perissten volumes nos permiten generar volumenes persistentes que se mantendrán siempre para el usuario.
+    Existen 2 recursos en K8S relacionados con esto, PV y PVC. El PV es un volumen persistente, mientras
+    que el PVC es similar a un deployment, nos permite configurar varios en un único manifiesto.
+
+    El funcionaamiento de un PVC es simple, una vez lo levantas los pods irán a solicitarle un PV según esté configurado
+    de forma dinámica.
+
+    Si borramos un PVC, el PV por defecto no se borrará hasta que no se elimine el POD. No obstante, este comportamiento
+    puede ser modificado con el campo 'persistentVolumeReclaimPolicy'
+
+    Valores del accessMode:
+
+        ReadWriteOnce: El volumen se monta sobre un nodo con permisos de lectura y escritura.
+        Este modo sigue permitiendo que varios pods accedan al volumen  siemrpre y cuando pertenezcan
+        al mísmo nodo.
+
+        ReadOnlyMany: El volumen se monta en varios nodos pero solo de lectura.
+
+        ReadWriteMany: El volumen se monta en varios nodos tanto en escritura como en lectura.
+
+        ReadWriteOncePod: El volumen se monta tanto en escritura como en lectura pero en un único pod.
+        Se debe usar si queremos que SOLO UN POD escriba o lea datos del volumen.
+
+        

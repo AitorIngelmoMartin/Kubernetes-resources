@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: alpine
+      image: alpine
+      command: ["/bin/sh","-c"]
+      args: ["shuf -i 0-100 -n 1 >> /opt/number.out;"] # Genera un nº del 1 al 100 y lo guarda en /opt/number.out
+      volumeMounts:
+        - mountPath: /opt # Carpeta donde se van a almacenar los ficheros. Será hija de la carperta root corespondiente
+          name: data-volume
+  volumes:
+    - name: data-volume
+      awsElasticBlockStore:
+        volumeID: <my-volume-id>
+        fsType: ext4
