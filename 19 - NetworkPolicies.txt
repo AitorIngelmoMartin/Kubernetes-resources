@@ -1,14 +1,14 @@
     A nivel de tráfico, se deben definir reglas de Ingress y Egress que definan por donde entra y sale el tráfico.
 
-    En  K8S, tenemos una VPC que por defecto tiene una política 'All allow' traffic que permite que todos los recursos
-    se comuniquen con todos los recursos.
+    En  K8S, tenemos una VPC que por defecto tiene una política 'All allow' internal traffic que permite que todos los recursos
+    se comuniquen entre ellos.
 
     No obstante, podemos definir nuestras propias políticas de redes a partir de labels
 
         apiVersion: networking.k8s.io/v1
         kind: NetworkPolicy
         metadata:
-        name: db-policy
+            name: db-policy
         spec:
         podSelector:
             matchLabels:
@@ -17,9 +17,9 @@
             - Ingress # o Egress
         ingress: # Esta sección SOLO tendrá efecto si el policyTypes está definido para este uso
             - from:
-            - podSelector:
-                matchLabels:
-                    name: api-pod # Label sobre el que vamos a aplicar la política
+                - podSelector:
+                    matchLabels:
+                        name: api-pod # Label sobre el que vamos a aplicar la política
             ports:
                 - protocol: TCP
                 port: 3306
