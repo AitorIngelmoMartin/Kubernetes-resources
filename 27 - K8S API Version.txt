@@ -1,0 +1,42 @@
+API version
+
+    Podemos consultar las versiones API usadas si lanzamos:
+
+        kubectl api-resources
+
+    Podemos consultar el API group de un resource con:
+
+        kubectl explain <resource>
+
+    Podemos ver la versión predefinida de un API con:
+
+        kubectl proxy 8001&
+
+        Starting to serve on 127.0.0.1:8001
+        curl localhost:8001/apis/<api-a-consultar>
+
+    Podemos modificar el API version usado en el cluster si vamos al fichero de configuración y agregamos
+
+        - --runtime-config=<api-a-cambiar>/<api-version>
+    
+
+Deprecado
+
+    Es posible que tengamos varios manifiestos con versiones API deprecadas.
+    Podemos actualziar todos los manifiestos si ejecutamos:
+
+        kubectl convert -f <deprecate-api-file> --output-version <new-api> (apps/v1 por ejemplo)
+
+        NOTA: 'convert' es un plugin, pero la documentación de K8S te enseña a instalarlo
+
+        Instalar el pluggin:
+
+            1) bajamos el binario
+                 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert"
+
+            2) Cambiamos los permisos
+                chmod +x kubectl-convert
+            
+            3) Movemos el fichero a 'bin'
+
+                mv kubectl-convert /usr/local/bin
