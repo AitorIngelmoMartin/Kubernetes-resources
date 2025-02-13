@@ -202,6 +202,6 @@ Podemos modificar SOLO EN EL CLUSTER la versión de una imagen de un deployment 
 
     Kubectl set image deployment/<deployment-name> <container-name>=<image-with-new-version>
 
-Podemos obtener el nº de recursos con:
+Podemos obtener el nº de recursos de un tipo concreto con:
 
     kubectl get <resource> --no-headers  | wc -l

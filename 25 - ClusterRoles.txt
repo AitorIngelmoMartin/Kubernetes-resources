@@ -1,0 +1,13 @@
+ClusterRoles
+
+    En K8S existen recursos que no son asociados a un namespace sino que pertenecen al cluster en si.
+    Estos son, entre otros:
+
+        nodes
+        PV
+        clusterroles
+        clusterrolebindings
+        certificatesignaturerequests
+        namespaces
+
+    Para dar permiso sobre estos recursos a usuarios, usamos los ClusterRoles
