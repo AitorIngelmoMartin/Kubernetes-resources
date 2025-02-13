@@ -1,0 +1,52 @@
+RBAC - roles
+
+    Los roles en K8S son un objetom ás que podemos crear a partir de manifiestos
+
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: Role
+        metadata:
+        name: developer
+        rules:
+        - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["list","get","create","update","delete"]
+        - apiGroups: [""]
+            resources: ["configMap"]
+            verbs: ["create"]
+    
+    Tras definir un rol, debemos vincularlo a los usuarios. Esto lo hacemos a partir de otro objeto llamado 'RoleBinding'
+
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+        name: devuser-developer-binding
+        subjects:
+        - kind: User
+            name: dev-user
+            apiGroup: rbac.authorization.k8s.io
+        roleRef:
+        kind: Role
+        name: developer # campo 'name' de los metadatos creados en nuestro rol
+        apiGroup: rbac.authorization.k8s.io
+    
+    Existe la posibilidad de restringir los permisos sobre ciertos recursos de un tipo. Por ejemplo, es posible que queramos dar acceso
+    sobre pods de tipo 'test' o 'app' pero no sobre los demás pods. Esto lo podemos hacer a través de la opción 'resourceNames' en la 
+    definición del rol.
+
+    Comandos
+
+        Para ver los roles:
+
+            kubectl get roles
+
+        Para ver los role RoleBinding:
+
+            kubectl get rolebinding
+
+        Comprobar tus permisos como usuario:
+
+            kubectl auth can-i <action> <resource> --> kubectl auth can-i create deployment
+
+        Comprobar permisos de otro usuario si tienes permiso para ello:
+
+            kubectl auth can-i <action> <resource> --as <user-name> --> kubectl auth can-i create pods --as dev-user

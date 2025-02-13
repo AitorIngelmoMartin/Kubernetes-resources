@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["list","get","create","update","delete"]
+  - apiGroups: [""]
+    resources: ["configMap"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["list","get","create","update","delete"]
+    resourceNames: ["dev","test"] # En lugar de dar permiso sobre todos los pods, solo lo da sobre los pods con este nombre

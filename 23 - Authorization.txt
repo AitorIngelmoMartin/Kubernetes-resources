@@ -1,0 +1,33 @@
+Authorization
+
+    En un cluster de K8S es habitual tener varios tipos de usuarios con permisos diferentes.
+
+    Para poder configurar esto, usualmente se realizan divisiones lógica a nivel de namespaces. Proporcionando acceso a los usuarios
+    a ciertos namespaces por si solos.
+
+    Existen los siguientes tipos de Authorization:
+
+        Node Authorize: En este sistena tenemos un 'Node Authorizer' que permite a kubelet realizar las llamadas API.
+        Cuando usamos este método, los kubelets únicamente pueden leer su propio 'Node Authorize' y únicamente pueden leer
+        pods vinculados a su nodo.
+
+        ABAC (atribute base Authorization): Proporciona una lista de permisos al usuario o grupo de usuarios a partir de una 
+        política vinculada a ellos.
+        
+            Siempre que modifiquemos o agregemos políticas, debemos hacerlo a mano y reiniciar el servidor API. 
+            Esto hace que sean difíciles de gestionar. Es por eso que se suele usar RBAC
+
+        RBAC (Rol base access controll): En lugar de definir permisos para usuarios o grupos de usuarios, definimos roles
+        y asociamos a los usuarios a dichos roles.
+        
+            Si editamos un rol, los cambios se reflejan automáticamente sin necesidad de reinicios.
+
+        WebHook: Consiste en hacer uso de un 3ero para el proceso de autenticación.
+    
+    En un cluster podemos configurar varios de estos tipos de autenticación, y se irán evaluando de uno en uno en el orden configurado
+
+    Podemos ver la configuración del cluster con:
+
+        kubectl describe pod kube-apiserver-controlplane -n kube-system
+
+        Los detalles estarán en la sección '--authorization-mode'
