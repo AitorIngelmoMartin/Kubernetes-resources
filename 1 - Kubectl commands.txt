@@ -201,3 +201,7 @@ Podemos aplicar cambios sobre un recurso con:
 Podemos modificar SOLO EN EL CLUSTER la versión de una imagen de un deployment con:
 
     Kubectl set image deployment/<deployment-name> <container-name>=<image-with-new-version>
+
+Podemos obtener el nº de recursos con:
+
+    kubectl get <resource> --no-headers  | wc -l
