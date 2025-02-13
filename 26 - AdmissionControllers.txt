@@ -1,0 +1,60 @@
+AdmissionControllers
+
+    Los roles vistos hasta ahora nos servían para restringir el acceso a las llamadas API de K8S.
+    No obstamte, si queremos restringit por que nunca se usen imagenes 'latest' en los pods, debemos hacer uso de los
+    AdmissionControllers
+
+    El funcionamiento es una lista de acciones a comprobar que se evalúa como último paso antes de realizar la ación de kubectl.
+    Un ejemplo de lista sería el siguiente:
+
+        AlwaysPullImages
+        DefaultStorageClass
+        EventRateLimit
+        NamespacesExist
+    
+    Podemos ver los admissions controllers activos en un cluster con:
+
+        kube-apiserver -h | grep enable-admission-plugins
+
+    Este comando debe lanzarse con un exec sobre el pod del control plane
+
+        kubectl exec kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep enable-admission-plugins
+
+        El direcorio con el YAML es el siguiente:
+            /etc/kubernetes/manifests/kube-apiserver.yaml
+
+            Para activar reglas usamos:       - --enable-admission-plugins=DefaultStorageClass
+            Para desactivar reglas usamos:    - --disable-admission-plugins=DefaultStorageClass
+
+    Los valores por defecto son:
+        CertificateApproval
+        CertificateSigning
+        CertificateSubjectRestriction
+        DefaultIngressClass
+        DefaultStorageClass
+        DefaultTolerationSeconds
+        LimitRanger
+        MutatingAdmissionWebhook
+        NamespaceLifecycle (es el reemplazo a las antiguas que impedia crear si no había namespace o que lo creaban si no estaba)
+        PersistentVolumeClaimResize
+        PodSecurity
+        Priority
+        ResourceQuota
+        RuntimeClass
+        ServiceAccount
+        StorageObjectInUseProtection
+        TaintNodesByCondition
+        ValidatingAdmissionPolicy
+        ValidatingAdmissionWebhook
+
+Validating and Mutating AdmissionControllers
+
+    Para poder hacer uso del validating and mutating, debemos configurar lo siguiente:
+
+        NamespaceAutoProvisioning-Mutating
+        NamespaceExist-Validating
+
+    El flujo de trabajo es:
+
+        1ero Muta
+        2o Valida

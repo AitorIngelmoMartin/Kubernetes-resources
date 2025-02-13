@@ -31,3 +31,7 @@ Authorization
         kubectl describe pod kube-apiserver-controlplane -n kube-system
 
         Los detalles estarán en la sección '--authorization-mode'
+
+    Ciclo permisos
+
+        kubectl --> Authentication --> Authorization --> AdmissionControllers --> Se realiza la acción
