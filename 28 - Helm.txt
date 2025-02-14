@@ -1,0 +1,47 @@
+Helm
+
+    Apodado como un gestor de paquetes en K8S, sirve para poder relacionar todos los recursos pertenecientes a la misma aplicación.
+    De esta forma, en lugar de tener que recordar todos los deployments, secretos, PV y demás recursos pertenecientes a una aplicación,
+    nos apoyamos en Helm para asociarlos.
+
+    Instalación
+
+        Para disponer de heml en el cluster, lanzamos
+
+            FEDORA:
+                
+                sudo snap install helm --classic ('--classic' es una opción que da más accesos que solo sobre el cluster)
+
+            UBUNTU: 
+                curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+                sudo apt-get install apt-transport-https --yes
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+                sudo apt-get update
+                sudo apt-get install helm
+
+            (ver versión de linux con: cat /etc/os-release)
+
+    Funcionamiento
+
+        Para poder agrupar todos los recursos pertenecientes a una aplicación, creamos un helm 'chart'.
+        Estos charts se pueden almacenar en el repositorio público de helm.
+
+        Podemos descargar un chart con:
+
+            helm pull --untar <repo-name>/<folder-to-download-yamls>
+
+        Podemos instalar un chart con:
+
+            helm install <release-name> <chart-name>
+
+        Podemos listar los paquetes descargados con:
+
+            helm list
+
+        Podemos desinstalar los paquetes descargados con:
+
+            helm uninstall <release>
+        
+        Podemos agregar un repositorio chart con
+
+            helm repo add <nombre-repo> <url-al-repositorio>
