@@ -10,3 +10,27 @@ Sección args del manifiesto
 
     Podemos definir el equivalente al ENTRYPOINT en K8S con el campo 'command'. El cual sobreescribre
     el valor del ENTRYPOINT del fichero docker.
+
+    Ejemplo de un pod que lanza el comando 'sleep 4800'
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+    name: yellow
+    spec:
+    containers:
+    - name: lemon
+        image: busybox
+        command:
+        - sleep
+        - "4800"
+    - name: gold
+        image: redis
+
+    Si queremos crear un pod que lance argumentos SOBRE EL COMANDO POR DEFECTO DEL POD, usamos:
+
+        k run <pod-name> --image=<image-name> -- <inline_arg_1> <inline_arg_1>
+
+    Si queremos crear un pod que lance argumentos sobre un comando custom, usamos:
+
+        k run <pod-name> --image=<image-name> --command -- <cmd> <arg_1> <arg_1>

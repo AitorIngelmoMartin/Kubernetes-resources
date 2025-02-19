@@ -10,4 +10,4 @@ spec:
       - sleep
       - "1000"
   - name: gold
-    image: redis
+    image: redisñ
