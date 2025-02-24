@@ -31,3 +31,25 @@
         1) TODO el tráfico que se deja entrar, puede salir, no necesitamos otra regla para que salga
 
         2) Es posible permitir tráfico desde IPs externas al cluster de K8S a través de un ipBlock
+
+Comando útil para verificar tema de conectividades:
+
+    nc -v -z -w 2 <host> 80
+
+    nc: Ejecuta Netcat, una herramienta de red para leer y escribir datos a través de conexiones de red utilizando TCP o UDP.
+
+    -v (Verbose): Muestra detalles adicionales sobre la conexión, incluidas las direcciones IP y puertos utilizados.
+                  Útil para depuración.
+
+    -z (Zero-I/O Mode): Realiza un escaneo de puertos sin enviar datos.
+                        Esto significa que no se establece una conexión completa, solo se verifica si el puerto está abierto o cerrado.
+                        Suele utilizarse para comprobar servicios en puertos específicos.
+
+    -w 2 (Timeout de 2 segundos): Define un tiempo máximo de espera de 2 segundos para la conexión.
+                                  Si el servicio no responde en ese tiempo, la conexión se cierra automáticamente.
+    
+    secure-service: El nombre de host o la dirección IP del servicio al que se desea conectar.
+                    Puede ser un servicio dentro de Kubernetes, un nombre DNS, o una dirección IP (ClusterIP).
+    
+    80: Especifica el puerto en el que se desea comprobar la conectividad.
+        En este caso, el puerto 80 es el puerto predeterminado para HTTP, lo que indica que probablemente se esté verificando si un servidor web o un servicio HTTP está en funcionamiento.
