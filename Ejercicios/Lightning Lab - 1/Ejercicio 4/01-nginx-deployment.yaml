@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-deploy
+  name: nginx-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-deploy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 2 # Specifies the maximum number of Pods that can be unavailable during the update process
+      maxSurge: 1 #  Specifies the maximum number of Pods that can be created over the desired number of Pods
+  template:
+    metadata:
+      labels:
+        app: nginx-deploy
+    spec:
+      containers:
+      - image: nginx:1.16
+        name: nginx
