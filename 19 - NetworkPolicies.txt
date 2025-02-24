@@ -32,6 +32,12 @@
 
         2) Es posible permitir tráfico desde IPs externas al cluster de K8S a través de un ipBlock
 
+    Siempre que tengamos un problema de conectividades internas, lo primero que debemos evaluar es la existencia de políticas con:
+
+        k get networkpolicies.networking.k8s.io
+            o
+        k get netpol
+
 Comando útil para verificar tema de conectividades:
 
     nc -v -z -w 2 <host> 80
