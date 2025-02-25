@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nombre-del-cronjob
+  labels:
+    app: mi-app
+spec:
+  schedule: "*/5 * * * *"      # Sintaxis cron para la programación
+  startingDeadlineSeconds: 100 # Tiempo máximo para iniciar un job retrasado
+  concurrencyPolicy: Forbid    # Control de concurrencia: Allow, Forbid, Replace
+  suspend: false               # Pausar el cronjob (true o false)
+  successfulJobsHistoryLimit: 3   # Cuántos jobs exitosos guardar
+  failedJobsHistoryLimit: 1       # Cuántos jobs fallidos guardar
+  timeZone: "America/Mexico_City" # Especifica la zona horaria (K8s 1.24+)
+  jobTemplate:
+    spec:
+      parallelism: 1           # Número de Pods ejecutándose en paralelo
+      completions: 1           # Número de veces que el Job debe completarse
+      backoffLimit: 4          # Reintentos en caso de fallo
+      ttlSecondsAfterFinished: 60 # Cuándo eliminar el Job completado
+      template:
+        spec:
+          activeDeadlineSeconds: 30  # Tiempo máximo para que el Job se complete
+          restartPolicy: OnFailure   # Política de reinicio: Never, OnFailure
+          containers:
+          - name: mi-contenedor
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - "echo 'Hola desde el CronJob' && date"
+          terminationGracePeriodSeconds: 10 # Tiempo de gracia para apagar el contenedor
