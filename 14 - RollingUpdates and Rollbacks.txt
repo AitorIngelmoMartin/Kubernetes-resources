@@ -83,8 +83,6 @@ EJEMPLOS
             - REVISION CHANGE-CAUSE
             - 1     <none>
             - 2     kubectl set image deployment nginx nginx=nginx:1.17 --record=true
-        
-
 
         You can now see that the change-cause is recorded for the revision 2 of this deployment.
 
@@ -114,9 +112,6 @@ EJEMPLOS
                     Mounts:   <none>
                 Volumes:   <none>
     
-    
-
-
     Undo a change:
 
         Lets now rollback to the previous revision:
