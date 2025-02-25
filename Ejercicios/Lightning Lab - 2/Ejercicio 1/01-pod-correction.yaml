@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx1401
+  namespace: dev1401
+spec:
+  containers:
+  - image: kodekloud/nginx
+    name: nginx
+    ports:
+    - containerPort: 9080 
+      protocol: TCP
+    # Seccion nueva
+    livenessProbe:
+      exec:
+          command: ["ls","/var/www/html/file_check"]
+      initialDelaySeconds: 10
+      periodSeconds: 60
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /
+        port: 9080 # Este puesto debe ser el mísmo que el del 'containerPort'
+        scheme: HTTP
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
