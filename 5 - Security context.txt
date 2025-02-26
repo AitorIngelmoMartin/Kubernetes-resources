@@ -76,5 +76,4 @@ spec:
     image: ubuntu
     name: ubuntu-sleeper
     securityContext:
-      capabilities:
-        add: ["SYS_TIME"]
+      

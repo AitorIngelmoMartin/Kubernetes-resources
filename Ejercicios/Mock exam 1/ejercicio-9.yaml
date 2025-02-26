@@ -1,0 +1,21 @@
+# Create a new Secret named db-secret-xxdf with the data given (on the below).
+
+#   Secret Name: db-secret-xxdf
+#   Secret 1: DB_Host=sql01
+#   Secret 2: DB_User=root
+#   Secret 3: DB_Password=password123
+
+# k create secret generic db-secret-xxdf --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+apiVersion: v1
+data:
+  DB_Host: c3FsMDE=
+  DB_Password: cGFzc3dvcmQxMjM=
+  DB_User: cm9vdA==
+kind: Secret
+metadata:
+  creationTimestamp: "2025-02-26T18:21:15Z"
+  name: db-secret-xxdf
+  namespace: default
+  resourceVersion: "6163"
+  uid: 6e9d305c-34ae-41bd-b9e3-c98de18b7598
+type: Opaque

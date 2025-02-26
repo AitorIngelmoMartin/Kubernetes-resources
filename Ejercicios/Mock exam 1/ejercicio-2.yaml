@@ -1,0 +1,7 @@
+# Create a namespace named apx-z993845
+
+# k create namespace apx-z993845
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apx-z993845

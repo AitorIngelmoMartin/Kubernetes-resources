@@ -1,0 +1,19 @@
+# Create a new ConfigMap named cm-3392845. Use the spec given on the below:
+#   ConfigName Name: cm-3392845
+#   Data: DB_NAME=SQL3322
+#   Data: DB_HOST=sql322.mycompany.com
+#   Data: DB_PORT=3306
+
+#  k create configmap cm-3392845 --from-literal=DB_NAME=SQL3322 --from-literal=DB_HOST=sql322.mycompany.com --from-literal=DB_PORT=3306
+apiVersion: v1
+data:
+  DB_HOST: sql322.mycompany.com
+  DB_NAME: SQL3322
+  DB_PORT: "3306"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-02-26T18:17:20Z"
+  name: cm-3392845
+  namespace: default
+  resourceVersion: "5855"
+  uid: b61e661d-2d21-406a-b561-452bc495c66a

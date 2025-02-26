@@ -1,0 +1,16 @@
+# Create a service messaging-service to expose the redis deployment in the marketing namespace within the cluster on port 6379.
+
+# k expose deployment --namespace=marketing redis --port=6379 --name=messaging-service --type=ClusterIP 
+apiVersion: v1
+kind: Service
+metadata:
+  name: messaging-service
+  namespace: marketing
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    name: redis-pod
+  type: ClusterIP

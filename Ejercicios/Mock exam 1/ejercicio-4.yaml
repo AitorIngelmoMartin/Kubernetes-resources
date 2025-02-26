@@ -1,0 +1,14 @@
+# Deploy a messaging pod using the redis:alpine image with the labels set to tier=msg.
+
+
+# k run messaging --image=redis:alpine --labels=tier=msg
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    tier: msg
+  name: messaging
+spec:
+  containers:
+  - image: redis:alpine
+    name: messaging

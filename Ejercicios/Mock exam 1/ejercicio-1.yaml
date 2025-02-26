@@ -1,0 +1,13 @@
+# Deploy a pod named nginx-448839 using the nginx:alpine image.
+
+# k run nginx-448839 --image=nginx:alpine
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx-448839
+  name: nginx-448839
+spec:
+  containers:
+  - image: nginx:alpine
+    name: nginx-448839

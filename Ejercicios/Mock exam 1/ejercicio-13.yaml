@@ -1,0 +1,36 @@
+# 1) Create a redis deployment using the image redis:alpine with 1 replica and label app=redis. 
+
+# 2) Expose it via a ClusterIP service called redis on port 6379. 
+
+# 3) Create a new Ingress Type NetworkPolicy called redis-access which allows only the pods with label access=redis to access the deployment.
+
+#   Image: redis:alpine
+#   Deployment created correctly?
+#   Service created correctly?
+#   Network Policy allows the correct pods?
+#   Network Policy applied on the correct pods?
+
+# 1-DEPLOYMENT
+# k create deployment redis --image=redis:alpine --replicas=1 --dry-run=client --port=6379
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: redis:alpine
+        name: redis
+        ports:
+        - containerPort: 6379
