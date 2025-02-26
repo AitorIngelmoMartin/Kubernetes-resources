@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: mi-namespace
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    resources:
+      requests:
+        cpu: "500m"          # Solicita 0.5 CPU (500 milicores)
+        memory: "256Mi"      # Solicita 256 MB de memoria
+      limits:
+        cpu: "1"             # Límite máximo de 1 CPU
+        memory: "512Mi"      # Límite máximo de 512 MB de memoria

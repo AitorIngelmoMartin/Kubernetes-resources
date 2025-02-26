@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mi-namespace
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mi-resource-quota
+  namespace: mi-namespace
+spec:
+  hard:
+    pods: "5"                     # Máximo 5 Pods en el Namespace
+    requests.cpu: "2"             # Máximo 2 CPUs solicitados en total
+    requests.memory: "4Gi"        # Máximo 4 GB de memoria solicitados
+    limits.cpu: "4"               # Máximo 4 CPUs asignables
+    limits.memory: "8Gi"          # Máximo 8 GB de memoria asignables
