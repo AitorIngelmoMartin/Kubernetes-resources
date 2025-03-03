@@ -121,6 +121,8 @@ Para listar recursos dentro de un namespace concreto podemos:
     Siempre podemos ver todos los recursos entre todos los namespace si lanzamos
 
     kubectl get <resource> --all-namespace
+                O
+    kubectl get <resource> -A
 
 Para obtener información de la conectividad de un servicio (svc) podemos:
 
