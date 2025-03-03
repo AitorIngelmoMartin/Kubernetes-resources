@@ -1,0 +1,18 @@
+# Este PVC no tomará cualquier PV disponible, solo se enlazará con un PV si:
+#     1) Tiene la etiqueta env: production
+#     2) Por lo menos dispone de 5Gi de almacenamiento.
+
+# Si no hay un PV disponible con esas características, el PVC quedará en estado "Pending".
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      env: production
