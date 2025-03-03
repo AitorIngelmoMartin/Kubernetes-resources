@@ -1,0 +1,24 @@
+# Create a job called whalesay with image busybox and command echo "cowsay I am going to ace CKAD!".
+
+#   completions: 10
+#   backoffLimit: 6
+#   restartPolicy: Never
+
+# Partiendo de: k create cronjob whalesay --image=busybox --schedule='0/5 * * * ?' -- echo "cowsay I am going to ace CKAD!"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: whalesay
+spec:
+  completions: 10
+  backoffLimit: 6
+  template:
+    spec:
+      containers:
+      - name: busybox-cowsay
+        image: busybox
+        command:
+        - sh
+        - -c
+        - "echo 'cowsay I am going to ace CKAD!'"
+      restartPolicy: Never

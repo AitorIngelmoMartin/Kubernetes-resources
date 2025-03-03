@@ -1,0 +1,18 @@
+# Create a PersistentVolume called custom-volume with:
+#     size: 50Mi
+#     reclaim policy:retain
+#     Access Modes: ReadWriteMany
+#     hostPath: /opt/data
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: custom-volume 
+spec:
+  hostPath:
+    path: /opt/data
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain

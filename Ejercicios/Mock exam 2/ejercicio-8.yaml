@@ -1,0 +1,33 @@
+# Create a pod called multi-pod with two containers.
+
+#   Container 1:
+#     name: jupiter, image: nginx
+#     Environment Variables:
+#     type: planet
+
+#   Container 2:
+#     name: europa, image: busybox
+#     command: sleep 4800
+#     Environment Variables:
+#     type: moon
+
+# Partiendo de: k run multi-pod --image=nginx
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: multi-pod
+  name: multi-pod
+spec:
+  containers:
+  - image: nginx
+    name: jupiter
+    env:
+    - name: type
+      value: "planet"
+  - image: busybox
+    name: europa
+    command: ["sleep","4800"]
+    env:
+    - name: type
+      value: "moon"
