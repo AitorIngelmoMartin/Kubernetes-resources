@@ -1,0 +1,7 @@
+Listar los namespaces del cluster y dejarlos en un path concreto
+
+  k get ns > /path
+
+Podemos obtener el resultado con
+
+  cat /path
