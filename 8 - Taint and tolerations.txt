@@ -25,7 +25,7 @@ Podemos deshacer un taint si lanzamos:
         desalojados a otro nodo.s
 
 
-Ejemplo de una abeja que permite el taint contra mosquitos
+Ejemplo de una 'abeja' que permite el taint creado para evitar los 'mosquitos'
 
     apiVersion: v1
     kind: Pod
