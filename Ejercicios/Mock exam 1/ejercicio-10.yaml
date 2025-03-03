@@ -3,10 +3,17 @@
 #   Image Name: ubuntu
 #   SecurityContext: Capability SYS_TIME
 
-
-
-# Sección a agregar
-securityContext:
-  runAsUser: 0 # root
-  capabilities:
-    add: ["SYS_TIME"]
+apiVersion: v1
+kind: Pod
+metadata:
+  name: security-context-demo
+spec:
+  securityContext:
+      runAsUser: 0 # Usar el usaurio root
+  containers:
+  - name: sec-ctx-demo
+    image: busybox:1.28
+    command: [ "sh", "-c", "sleep 1h" ]
+    securityContext: # Al no decir nada, usamos el usuario definido a nivel 'spec', que es el root
+      capabilities: # Agregamos el Capability
+        add: ["SYS_TIME"]
