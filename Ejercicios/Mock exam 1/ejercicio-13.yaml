@@ -34,3 +34,52 @@ spec:
         name: redis
         ports:
         - containerPort: 6379
+---
+# 2) ClusterIP
+# k create service clusterip redis --tcp=6379
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redis
+  name: redis
+spec:
+  clusterIP: 172.20.235.147
+  clusterIPs:
+  - 172.20.235.147
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: "6379"
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis
+  type: ClusterIP
+---
+# NOTA: Podríamos haber creado el deployment y el ClusterIp con: 
+# k expose deployment redis --name=redis --port=6379 --target-port=6379
+
+# 3) NetworkPolicy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-access
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: redis #Labels del deployment
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: redis #Labels de los pods sobre los que aplica la regla
+    ports:
+    - port: 6379
+      protocol: TCP
