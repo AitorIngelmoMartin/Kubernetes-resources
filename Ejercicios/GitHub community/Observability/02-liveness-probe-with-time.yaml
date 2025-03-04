@@ -1,0 +1,23 @@
+# Modify the pod.yaml file so that liveness probe starts kicking in after 5 seconds
+# whereas the interval between probes would be 5 seconds.
+# Run it, check the probe, delete it.
+
+
+# Partiendo del manifiesto del ejercicio anterior
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx-probe
+  name: nginx-probe
+spec:
+  containers:
+  - image: nginx
+    name: nginx-probe
+    livenessProbe:
+      exec:
+        command:
+        - ls
+      initialDelaySeconds: 5 # Linea agregada
+      periodSeconds: 5 # Linea agregada
+  restartPolicy: Never

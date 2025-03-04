@@ -1,0 +1,24 @@
+# Create a busybox pod that runs i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done.
+# Check its logs
+
+# Partiendo de 
+# k run my-busybox --image=busybox --dry-run=client -o yaml > 01-my-busybox.yaml --command -- sh -c 'runs i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done'
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: my-busybox
+  name: my-busybox
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - 'runs i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done'
+    image: busybox
+    name: my-busybox
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+
+# Luego podemos ver los logs con:
+#     k logs my-busybox
