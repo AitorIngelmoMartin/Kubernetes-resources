@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: throw-dice-cron-job
+  namespace: default
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      name: throw-dice-cron-job
+    spec:
+      template:
+        metadata:
+          name: throw-dice-cron-job
+        spec:
+          containers:
+          - image: kodekloud/throw-dice
+            imagePullPolicy: Always
+            name: throw-dice-cron-job
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+  schedule: 30 21 * * *
+  successfulJobsHistoryLimit: 3
