@@ -1,0 +1,53 @@
+# Team Pluto needs a new cluster internal Service. 
+
+#     Create a ClusterIP Service named project-plt-6cc-svc in Namespace pluto. 
+#     This Service should expose a single Pod named project-plt-6cc-api of image nginx:1.17.3-alpine.
+#     The Service should use tcp port redirection of 3333:80.
+    
+#     Create that Pod with label project: plt-6cc-api. 
+
+# Finally use for example curl from a temporary nginx:alpine Pod to get the response from the Service.
+# Write the response into /opt/course/10/service_test.html on ckad9043.
+# Also check if the logs of Pod project-plt-6cc-api show the request and write those into 
+# /opt/course/10/service_test.log on ckad9043.
+
+
+# k create namespace pluto
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: pluto
+---
+# k create service clusterip project-plt-6cc-svc --namespace=pluto --tcp=3333:80 
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: project-plt-6cc-svc
+  name: project-plt-6cc-svc
+  namespace: pluto
+spec:
+  ports:
+  - name: 3333-80
+    port: 3333
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: project-plt-6cc-svc
+  type: ClusterIP
+---
+# k run project-plt-6cc-api --image=nginx:1.17.3-alpine --namespace=pluto --port=80 --dry-run=client -o yaml > 03-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: project-plt-6cc-api
+  name: project-plt-6cc-api
+  namespace: pluto
+spec:
+  containers:
+  - image: nginx:1.17.3-alpine
+    name: project-plt-6cc-api
+    ports:
+    - containerPort: 80
