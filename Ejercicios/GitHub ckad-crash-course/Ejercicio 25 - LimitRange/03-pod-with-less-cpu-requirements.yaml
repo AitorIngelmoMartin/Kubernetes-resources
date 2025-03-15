@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod-with-less-cpu-resource-requirements
+  name: pod-with-less-cpu-resource-requirements
+  namespace: d92
+spec:
+  containers:
+  - image: nginx:1.23.4-alpine
+    name: pod-with-less-cpu-resource-requirements
+    resources:
+      limits:
+        cpu: 400m
+      requests:
+        cpu: 350m
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-m5hnw
+      readOnly: true
+status:
+  phase: Pending
+  qosClass: Burstable
+
+# Si levantamos este pod, le adjudica los siguientes recursos:
+
+# Limits:
+#   cpu: 500m
+# Requests:
+#   cpu: 500m

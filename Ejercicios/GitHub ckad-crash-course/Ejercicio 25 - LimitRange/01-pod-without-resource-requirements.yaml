@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod-without-resource-requirements
+  name: pod-without-resource-requirements
+  namespace: d92
+spec:
+  containers:
+  - image: nginx:1.23.4-alpine
+    name: pod-without-resource-requirements
