@@ -1,0 +1,68 @@
+# Create a new PersistentVolume named earth-project-earthflower-pv.
+# It should have a capacity of 2Gi, accessMode ReadWriteOnce, hostPath /Volumes/Data and no storageClassName defined.
+
+# Next create a new PersistentVolumeClaim in Namespace 'earth' named earth-project-earthflower-pvc .
+# It should request 2Gi storage, accessMode ReadWriteOnce and should not define a storageClassName.
+# The PVC should bound to the PV correctly.
+
+# Finally create a new Deployment project-earthflower in Namespace 'earth' which mounts that volume at /tmp/project-data.
+# The Pods of that Deployment should be of image httpd:2.4.41-alpine.
+
+# k create namespace earth --dry-run=client
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: earth         
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: earth-project-earthflower-pv
+spec:
+  capacity:
+    storage: 2Gi
+  hostPath:
+    path: /Volumes/Data
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: earth-project-earthflower-pvc
+  namespace: earth
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+# k create deployment project-earthflower --namespace=earth --image=httpd:2.4.41-alpine
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: project-earthflower
+  name: project-earthflower
+  namespace: earth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-earthflower
+  template:
+    metadata:
+      labels:
+        app: project-earthflower
+    spec:
+      volumes:
+        - name: project-data
+          persistentVolumeClaim:
+            claimName: earth-project-earthflower-pvc
+      containers:
+      - image: httpd:2.4.41-alpine
+        name: httpd
+        volumeMounts:
+          - mountPath: "/tmp/project-data"
+            name: project-data
